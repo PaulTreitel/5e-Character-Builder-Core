@@ -3,7 +3,6 @@ use serde::{Serialize, Deserialize};
 use crate::{
     basic::Stat, 
     character::char_attributes::{CreatureSize, CreatureType, Speeds}, 
-    feats::feat_effect::FeatEffect, 
     proficiencies::LanguageProf
 };
 
@@ -26,14 +25,16 @@ pub struct Race {
 pub struct SubRace {
     name: String,
     description: String,
-    abilities: Vec<FeatEffect>,
+    // TODO Should racial effects use the FeatEffect enum or its own specific effect?
+    // abilities: Vec<FeatEffect>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Default)]
 struct RacialAbility {
     name: String,
     description: String,
-    effect: Option<FeatEffect>,
+    // TODO Should racial effects use the FeatEffect enum or its own specific effect?
+    // effect: Option<FeatEffect>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
