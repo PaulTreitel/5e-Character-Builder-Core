@@ -613,7 +613,7 @@ item → fragment → graph → evaluation
 ### 12. Item Definition
 
 Game data:
-```
+```YAML
 id: ring_of_protection  
   
 rules:  
@@ -629,7 +629,7 @@ rules:
 ### 13. Data Loader
 
 Converted to a fragment:
-```
+```Rust
 pub fn load_item_fragment(data: ItemData) -> RuleFragment {  
     RuleFragment {  
         constants: vec![  
@@ -653,7 +653,7 @@ pub fn load_item_fragment(data: ItemData) -> RuleFragment {
 ### 14. Inventory Emits Fragments
 
 When item is equipped:
-```
+```Rust
 impl Inventory {  
     pub fn fragments(&self) -> Vec<RuleFragment> {  
         self.items  
@@ -669,7 +669,7 @@ impl Inventory {
 ### 15. Graph Merge
 
 Engine collects fragments:
-```
+```Rust
 for fragment in fragments {  
     graph.merge(fragment);  
 }
@@ -1271,7 +1271,7 @@ And integrate cleanly with the **rules engine**.
 ### Core Inventory Structure
 
 The entire inventory is just:
-```
+```Rust
 struct Inventory {  
     items: HashMap<ItemInstanceId, ItemInstance>,  
     stacks: HashMap<ItemStackId, ItemStack>,  
@@ -1539,7 +1539,7 @@ This avoids a special currency system.
 ### Attunement
 
 Characters track attuned items.
-```
+```Rust
 struct Attunement {  
     items: Vec<ItemInstanceId>,  
 }
@@ -1641,7 +1641,7 @@ Potion x2
 Torch → Backpack
 ```
 Set:
-```Rust
+```
 location = InContainer(backpack)
 ```
 ---
@@ -3453,7 +3453,7 @@ HP
 prepared spells
 ```
 Example character state:
-```
+```JSON
 {  
   "character_id": "c123",  
   "class": "wizard",  

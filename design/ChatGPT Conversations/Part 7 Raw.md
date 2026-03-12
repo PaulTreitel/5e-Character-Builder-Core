@@ -2746,3 +2746,418 @@ while keeping the **rule engine itself small and clean**.
 ---
 
 If you'd like, I can also show **one last optimization used by large tabletop engines that dramatically speeds up rule evaluation for complex characters (reducing rule evaluation from hundreds of rule checks to only a few dozen)**.
+
+# Are there other special cases in the ruleset like the wildshapes that we haven't covered? If so what are they and how might our design need to change to accommodate them?
+
+Yes — there **are several special-case mechanics in 5e** similar to Wild Shape that stress an otherwise clean rules engine. Most of them do **not require architecture changes**, but a few benefit from small extensions to the design we built.
+
+The good news is that your architecture (rules + effects + character state + choices + content registry) already handles most of them. The remaining cases mainly fall into **four categories**:
+
+1. **Stat block replacement**
+2. **Limited selectable forms/options**
+3. **Conditional feature replacement**
+4. **Persistent but configurable entities**
+
+Below are the important ones.
+
+---
+
+### 1. Stat Block Replacement Systems
+
+(Wild Shape is one example)
+
+These mechanics **temporarily replace large parts of the character sheet** with another stat block.
+
+Examples:
+
+- Druid **Wild Shape**
+- **Polymorph**
+- **True Polymorph**
+- **Shapechange**
+- **Magic Jar** (partial)
+- **Wildshape 2024 with form limits**
+
+##### Why they are tricky
+
+They modify many stats simultaneously:
+```
+HP  
+AC  
+movement  
+attacks  
+skills  
+senses  
+size  
+creature type
+```
+##### Our current solution
+
+We already introduced:
+```
+StatOverride  
+StatSource
+```
+Example rule effect:
+```YAML
+override stat: Strength  
+source: creature.strength
+```
+##### Design extension
+
+Add a **StatSource enum**:
+```Rust
+pub enum StatSource {  
+    Character,  
+    Creature(CreatureId),  
+}
+```
+Character context stores:
+```Rust
+active_form: Option<CreatureId>
+```
+The rule engine checks the current stat source.
+
+No major architecture change required.
+
+---
+
+### 2. Limited Known Forms / Options
+
+(2024 Wild Shape)
+
+These systems require **a stored list of selectable options**.
+
+Examples:
+
+- **Wild Shape forms (2024)**
+- **Warlock invocations**
+- **Artificer infusions**
+- **Battle Master maneuvers**
+- **Metamagic options**
+
+##### Why they are tricky
+
+Players must choose a **subset from a large list**, and the list may change when leveling.
+
+Example:
+```
+Choose 2 invocations  
+Choose 4 maneuvers  
+Choose 3 metamagics
+```
+##### Our design already supports this
+
+Using:
+```
+ChoiceSet  
+character_choices table
+```
+Example:
+```YAML
+choice: warlock_invocation  
+value: agonizing_blast
+```
+##### Optional improvement
+
+Add **choice limits**.
+```Rust
+pub struct ChoiceSet {  
+    pub id: ChoiceSetId,  
+    pub options: Vec<ContentKey>,  
+    pub max_selections: u8,  
+}
+```
+No architectural change needed.
+
+---
+
+### 3. Partial Feature Replacement
+
+(Some features replace earlier ones)
+
+Examples:
+```
+Fighting Style replacements  
+Cantrip replacement on level up  
+Spell replacement for known casters  
+Tasha's feature replacements  
+2024 feature swaps
+```
+Example:
+```
+replace spell known  
+replace fighting style  
+replace class feature
+```
+##### Why it matters
+
+These are **player edits to previous choices**, not new features.
+
+##### Solution
+
+Treat replacements as **choice mutations**.
+
+Example DB state:
+```YAML
+choice: spell_known  
+value: burning_hands  
+  
+choice: spell_replace  
+old: burning_hands  
+new: scorching_ray
+```
+Or simpler:
+```
+Remove old choice and insert new one.
+```
+No rule engine change required.
+
+---
+
+### 4. Persistent Configurable Entities
+
+Some mechanics create **objects with state**.
+
+Examples:
+```
+Artificer infusions  
+Steel Defender  
+Homunculus  
+Beast Master companion  
+Find Familiar  
+Summoned creatures
+```
+These behave like **mini-characters**.
+
+##### Why this matters
+
+They may have:
+```
+HP  
+AC  
+actions  
+conditions  
+equipment
+```
+##### Simple design solution
+
+Treat them as **creature instances attached to a character**.
+```Rust
+pub struct Companion {  
+    pub creature_id: CreatureId,  
+    pub owner: CharacterId,  
+}
+```
+Database:
+```
+character_companions
+```
+The engine evaluates them like creatures.
+
+No rule engine change needed.
+
+---
+
+### 5. Feature Scaling Tables
+
+Some features scale by level in **nonlinear tables**.
+
+Examples:
+```
+Sneak attack dice  
+Rage damage  
+Martial arts die  
+Channel divinity uses  
+Wild shape uses
+```
+##### Current solution
+
+Handled by **rules conditional on level**.
+
+Example rule:
+```
+if rogue_level >= 5  
+sneak_attack = 3d6
+```
+But this can produce many rules.
+
+##### Optional improvement
+
+Add **LevelProgression tables**.
+```Rust
+pub struct LevelProgression<T> {  
+    pub values: Vec<T>  
+}
+```
+Example:
+```
+[1d6,1d6,2d6,2d6,3d6...]
+```
+Cleaner but optional.
+
+---
+
+### 6. Conditional Rule Activation
+
+Some rules activate only under specific contexts.
+
+Examples:
+```
+Sneak attack conditions  
+Pack tactics  
+Barbarian rage bonuses  
+Flanking rules (optional)
+```
+Already handled by:
+```
+RuleCondition
+```
+Example:
+```YAML
+condition: target_adjacent_to_ally
+```
+No architecture change needed.
+
+---
+
+### 7. Temporary Rule Bundles
+
+Some spells apply **large sets of temporary effects**.
+
+Examples:
+```
+Bless  
+Haste  
+Slow  
+Heroism  
+Tenser's Transformation
+```
+Already handled by:
+```
+ActiveEffect
+```
+Example:
+```Rust
+EffectSource::Spell
+```
+No change required.
+
+---
+
+### 8. Inventory Transformations
+
+Certain effects temporarily change equipment behavior.
+
+Examples:
+```
+Hex Warrior weapon  
+Shillelagh  
+Magic weapon  
+Pact weapon
+```
+These modify **item-derived stats**.
+
+Our design already supports:
+```Rust
+RuleEffect::ModifyAttack  
+RuleEffect::ModifyDamage
+```
+So no architecture change needed.
+
+---
+
+### 9. Spellcasting Variants
+
+Spellcasting has multiple models:
+```
+prepared casters  
+known casters  
+spellbooks  
+pact magic  
+psionics (optional)
+```
+Our architecture already models this through:
+```
+SpellcastingSystem trait  
+Spell slots resources  
+character_spells table
+```
+No changes needed.
+
+---
+
+### 10. Shared Resource Pools
+
+Some resources come from **multiple sources**.
+
+Examples:
+```
+Channel Divinity  
+Wild Shape  
+Sorcery Points  
+Superiority Dice
+```
+Already solved by:
+```Rust
+ResourcePool
+```
+Example:
+```
+resource_id = channel_divinity
+```
+Rules modify the maximum.
+
+---
+
+### 11. Things We Already Covered That Solve Most Edge Cases
+
+Your system already handles:
+```
+inventory containers  
+stacking rules  
+rule overrides  
+homebrew modules  
+content registry  
+choice trees  
+wildshape form lists
+```
+So most special cases fall naturally into existing systems.
+
+---
+
+### Final Assessment
+
+Only **three mechanics required explicit architectural support**:
+
+|Mechanic|Solution|
+|---|---|
+|stat block replacement|StatSource system|
+|limited selectable options|ChoiceSet|
+|persistent companions|creature instances|
+
+Everything else fits into:
+```
+rules  
+effects  
+conditions  
+resources  
+choices
+```
+---
+
+### Final Conclusion
+
+Your architecture already handles **~95% of 5e mechanics cleanly**.
+
+The only special systems worth explicitly modeling are:
+```
+StatSource (forms)  
+ChoiceSet (selectable features)  
+Companion entities  
+LevelProgression tables (optional)
+```
+Everything else can be expressed through the **data-driven rule system**.
+
+---
+
+If you'd like, I can also show **the 6 worst rule edge cases in 5e that frequently break naive character builders and how your architecture specifically handles each one**.
