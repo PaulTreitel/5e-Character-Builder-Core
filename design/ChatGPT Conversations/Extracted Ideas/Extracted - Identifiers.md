@@ -1,0 +1,73 @@
+
+# General Discussion Links
+
+### Part 3
+- [[Part 3 Raw#4. The ID-Based Architecture|ID-Based Architecture]]
+- [[Part 3 Raw#What would be an effective way to represent the rules data (classes, races, items, feats, spells, etc) that will transfer easily? This requires both programmatic functional data and non-functional data like descriptions and sources.|ID-Based Rules Data]]
+
+### Part 4
+- Make class features ID-based features rather than embedding them in the class data
+
+### Part 5
+- [[Part 5 Raw#Preventing ID Conflicts|Namespace your IDs]]
+
+### Part 6
+- [[Part 6 Raw#`Id` Types|ID Structs and Advantages]]
+- [[Part 6 Raw#Please do [Improvement to avoid `Id` boilerplate], but keep it brief|Generic Typed ID]]
+
+### Part 7
+- [[Part 7 Raw#4. Unified ContentId|ContentId System]]
+
+# IDs Used
+
+| Identifier                                                                                                                    | Part 1 | Part 2 | Part 3 | Part 4 | Part 5 | Part 6 | P6 Architecture | Part 7 | Note                                                                                                                                                   |
+| ----------------------------------------------------------------------------------------------------------------------------- | ------ | ------ | ------ | ------ | ------ | ------ | --------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `BackgroundId`                                                                                                                | ✔      |        |        |        |        | ✔      | ✔               |        |                                                                                                                                                        |
+| `ClassId`                                                                                                                     | ✔      | ✔      |        | ✔      | ✔      | ✔      | ✔               |        |                                                                                                                                                        |
+| `FeatId`                                                                                                                      | ✔      | ✔      |        | ✔      | ✔      | ✔      | ✔               | ✔      | seems specific to feats only                                                                                                                           |
+| `FeatureId`                                                                                                                   | ✔      | ✔      |        |        |        | ✔      |                 |        |                                                                                                                                                        |
+| `RaceId`/`SpeciesId`                                                                                                          | ✔      | ✔      |        | ✔      |        | ✔      | ✔               |        |                                                                                                                                                        |
+| `SpellListId`                                                                                                                 | ✔      | ✔      |        |        |        | ✔      |                 |        |                                                                                                                                                        |
+| `SubclassId`                                                                                                                  | ✔      | ✔      |        |        |        | ✔      | ✔               |        |                                                                                                                                                        |
+| `ItemId`                                                                                                                      |        | ✔      |        | ✔      | ✔      | ✔      | ✔               | ✔      |                                                                                                                                                        |
+| `ItemInstanceId`                                                                                                              |        | ✔      | ✔      | ✔      | ✔      |        |                 |        |                                                                                                                                                        |
+| `NodeId`                                                                                                                      |        | ✔      | ✔      |        |        |        |                 |        | rule dependency graph                                                                                                                                  |
+| `RuleId`                                                                                                                      |        | ✔      |        |        |        | ✔      | ✔               | ✔      | rule dependency graph                                                                                                                                  |
+| `SpellId`                                                                                                                     |        | ✔      | ✔      | ✔      | ✔      | ✔      | ✔               | ✔      |                                                                                                                                                        |
+| `EffectId`                                                                                                                    |        |        | ✔      |        |        |        |                 |        | mentioned for temporary duration effects (irrelevant)                                                                                                  |
+| `ItemDefId`                                                                                                                   |        |        | ✔      |        |        |        |                 |        |                                                                                                                                                        |
+| `StackId`                                                                                                                     |        |        | ✔      |        |        |        |                 |        | item stacks                                                                                                                                            |
+| `CharacterId`                                                                                                                 |        |        |        | ✔      |        |        |                 |        |                                                                                                                                                        |
+| `ClassFeatureId`                                                                                                              |        |        |        | ✔      |        |        |                 |        | 1-off mention for tracking rule effect origins                                                                                                         |
+| `ConditionId`                                                                                                                 |        |        |        | ✔      | ✔      | ✔      |                 |        |                                                                                                                                                        |
+| `FeatureBundleId`                                                                                                             |        |        |        | ✔      |        |        |                 |        | generalize over  2014 race + bg vs species + bg 2024                                                                                                   |
+| `ResourceId`                                                                                                                  |        |        |        | ✔      |        | ✔      | ✔               |        | generic recoverable resources (eg CD, Wildshape)                                                                                                       |
+| `FormId`                                                                                                                      |        |        |        |        | ✔      |        |                 |        | addressing wildshape                                                                                                                                   |
+| `SourceId`                                                                                                                    |        |        |        |        | ✔      |        |                 |        | 1-off for tracking modifier sources<br>(eg for not double-counting half <br>and three quarters cover)                                                  |
+| `StatId`                                                                                                                      |        |        |        |        | ✔      | ✔      | ✔               | ✔      | enum for any and all derived "stats" (values)                                                                                                          |
+| `AbilityScoreId`<br>`SkillId`<br>`SpeedId`<br>`DerivedStatId`<br>`SavingThrowId`<br>`InitiativeStatId`<br>`ProficiencyStatId` |        |        |        |        |        | ✔      | ✔               |        | split sub-enums of `StatId` so that `StatId` can be <br>an enum-of-enums system and it's not just 1 giant list                                         |
+| `ActionId`                                                                                                                    |        |        |        |        |        | ✔      | ✔               |        |                                                                                                                                                        |
+| `CharacterId`                                                                                                                 |        |        |        |        |        |        | ✔               |        |                                                                                                                                                        |
+| `ChoiceId`                                                                                                                    |        |        |        |        |        | ✔      | ✔               |        |                                                                                                                                                        |
+| `ContainerId`                                                                                                                 |        |        |        |        |        |        | ✔               |        |                                                                                                                                                        |
+| `CreatureId`                                                                                                                  |        |        |        |        |        | ✔      |                 | ✔      | addressing wildshape<br>written as enum of valid creatures                                                                                             |
+| `FightingStyleId`                                                                                                             |        |        |        |        |        | ✔      |                 |        |                                                                                                                                                        |
+| `TransformSystemId`                                                                                                           |        |        |        |        |        | ✔      |                 |        | addressing wildshape 2024 selecting your forms                                                                                                         |
+| `WeaponMasteryId`                                                                                                             |        |        |        |        |        | ✔      | ✔               |        |                                                                                                                                                        |
+| `ContentId`                                                                                                                   |        |        |        |        |        |        |                 | ✔      | generalization of ids to avoid repeated loading code<br>so (type, `ContentId`) is the full identifier<br>e.g. `ContentType::Spell, 0 -> magic missile` |
+| `ModuleId`                                                                                                                    |        |        |        |        |        |        |                 | ✔      | module dependency graph (eg TCoE depends on PHB)                                                                                                       |
+
+# Extracted Implementations
+
+### Enums
+- `StatId` as a listing of various derived stats, alternatively broken down into an enum-of-enums
+- `CreatureId` as a listing of valid wildshape forms
+	- this will not work as it excludes new or homebrew Beasts being options
+- using straight enum for a general ID is bad because it would allow things like `Id::Feat -> Spell`  to be valid
+
+### Structs
+- type wrapper around a string 
+	- either `String` or `static &str` (idk about the implementation for the latter)
+- type wrapper around an integer
+	- useful for indexing into a content array for more optimized identifiers, or for dynamic things where string IDs aren't actually unique (e.g., inventory)
+- could have separate structs for each ID type or a generic `Id<T>`

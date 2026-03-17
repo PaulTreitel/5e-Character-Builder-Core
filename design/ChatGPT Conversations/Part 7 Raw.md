@@ -2675,14 +2675,14 @@ produce character sheet
 
 It keeps responsibilities clean:
 
-|Layer|Responsibility|
-|---|---|
-|engine|rule evaluation|
-|content|definitions + IDs|
-|loader|module + YAML loading|
-|character|character state|
-|database|persistence|
-|cli/gui|interface|
+| Layer     | Responsibility        |
+| --------- | --------------------- |
+| engine    | rule evaluation       |
+| content   | definitions + IDs     |
+| loader    | module + YAML loading |
+| character | character state       |
+| database  | persistence           |
+| cli/gui   | interface             |
 
 This avoids **God modules**.
 
@@ -3129,11 +3129,11 @@ So most special cases fall naturally into existing systems.
 
 Only **three mechanics required explicit architectural support**:
 
-|Mechanic|Solution|
-|---|---|
-|stat block replacement|StatSource system|
-|limited selectable options|ChoiceSet|
-|persistent companions|creature instances|
+| Mechanic                   | Solution           |
+| -------------------------- | ------------------ |
+| stat block replacement     | StatSource system  |
+| limited selectable options | ChoiceSet          |
+| persistent companions      | creature instances |
 
 Everything else fits into:
 ```

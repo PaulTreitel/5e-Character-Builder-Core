@@ -715,7 +715,7 @@ Your **rule engine, modifier system, and caches still index by `StatId`**, so al
 ✔ Split for clarity and safety.  
 ✔ Keep a **single top-level `StatId`** so the rule system stays simple.
 
-The druid wildshape 2024 problem is slightly different. Now druid can only select a set number of wildshape forms to have. How would we need to change the design to accommodate that?
+# The druid wildshape 2024 problem is slightly different. Now druid can only select a set number of wildshape forms to have. How would we need to change the design to accommodate that?
 
 The **2024 Wild Shape change** introduces a new concept your current system likely doesn’t model yet: **known forms** (a curated list chosen by the character) separate from **available forms** (all beasts that meet CR restrictions). This is essentially the same pattern used for **known spells vs spell list**.
 
@@ -2893,11 +2893,11 @@ But **not for core engine APIs**.
 
 ### Summary
 
-|Approach|Pros|Cons|
-|---|---|---|
-|`Id<T>` generic|compile-time safety, clean APIs|tiny boilerplate|
-|many `struct SpellId` types|very explicit|more boilerplate|
-|single `Id` enum|simple to declare|loses type safety|
+| Approach                    | Pros                            | Cons              |
+| --------------------------- | ------------------------------- | ----------------- |
+| `Id<T>` generic             | compile-time safety, clean APIs | tiny boilerplate  |
+| many `struct SpellId` types | very explicit                   | more boilerplate  |
+| single `Id` enum            | simple to declare               | loses type safety |
 
 **Best practice for this architecture:**
 

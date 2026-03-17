@@ -2203,7 +2203,7 @@ Bad:
 character.features.push("darkvision");
 ```
 Good:
-```Rust
+```
 race.features -> collected
 ```
 ### 14. Ideal Character Architecture
