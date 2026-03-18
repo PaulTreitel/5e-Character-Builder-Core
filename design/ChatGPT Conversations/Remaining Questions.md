@@ -1,3 +1,8 @@
 - Caching or snapshotting a character sheet---how does that integrate in and what's the benefit vs just recalculating and updating immediately? Is cache/snapshot specifically for storing derived values and the original struct for the choices etc?
 	- Maybe I answered my own question.
 - spell points variant system
+- race/species implementation (2014/2024)
+- backgrounds implementation (2014/2024)
+- libraries that will be useful
+- CLI implementation structure
+- GUI implementation structure
