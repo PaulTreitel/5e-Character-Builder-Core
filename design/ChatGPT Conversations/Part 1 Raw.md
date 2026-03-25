@@ -921,7 +921,7 @@ Example data:
   ]
 }
 ```
-6. Effect Storage
+### 6. Effect Storage
 
 You can either:
 
@@ -1704,7 +1704,7 @@ Example JSON:
   "features": ["darkvision", "keen_senses"]
 }
 ```
-7. Class Example
+### 7. Class Example
 ```Rust
 pub struct Class {
     pub id: ClassId,
@@ -1727,7 +1727,7 @@ Example:
   }
 }
 ```
-8. Subclass Structure
+### 8. Subclass Structure
 
 Subclass:
 ```Rust
@@ -2135,7 +2135,7 @@ skill modifiers
 ```
 Never store derived values.
 
-10. How Features Fit Into This
+### 10. How Features Fit Into This
 
 Your pipeline becomes:
 ```

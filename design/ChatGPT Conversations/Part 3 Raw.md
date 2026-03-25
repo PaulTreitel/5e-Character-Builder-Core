@@ -220,7 +220,7 @@ saving_throw_bonus += bless_save_bonus
 ### Activating an Effect
 
 When a spell is cast:
-```
+```Rust
 character.active_effects.push(effect);
 ```
 The engine rebuilds fragments.
@@ -244,13 +244,13 @@ Evaluation
 Game loop ticks durations.
 
 Example:
-```
+```Rust
 for effect in &mut character.effects {  
     effect.duration.tick();  
 }
 ```
 Remove expired effects:
-```
+```Rust
 character.effects.retain(|e| !e.duration.expired());
 ```
 Graph automatically updates.

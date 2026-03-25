@@ -10,9 +10,7 @@
 
 ### Part 5
 - [[Part 5 Raw#7. Species (Race / Species System)|short YAML]]
-
-# Common Data Structure Elements
-
+	
 # Extracted Data Structures and Representations
 
 ### Part 1
