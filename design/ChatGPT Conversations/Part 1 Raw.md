@@ -1097,7 +1097,7 @@ Race (Elf)
 ```
 You should build this graph in memory, not with SQL joins.
 
-14. Content Pack Installation
+### 14. Content Pack Installation
 
 Homebrew should be installable.
 

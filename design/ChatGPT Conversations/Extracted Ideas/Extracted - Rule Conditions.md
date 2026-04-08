@@ -1,5 +1,8 @@
 # Links
 
+### Part 1
+1. [[Part 1 Raw#6. Requirement System|Requirement system]]
+
 ### Part 2
 1. [[Part 2 Raw#11. Fragments Enable Conditional Rules|Conditional rule fragments]]
 
@@ -22,6 +25,19 @@
 # Common Data Structure Elements
 
 # Extracted Data Structures and Representations
+
+### Part 1
+
+#### #1
+```Rust
+enum Requirement {
+    Class(String),
+    Level(u8),
+    StatAbove { stat: Stat, value: u8 },
+}
+
+fn check_requirement(character: &Character, req: &Requirement) -> bool
+```
 
 ### Part 2
 

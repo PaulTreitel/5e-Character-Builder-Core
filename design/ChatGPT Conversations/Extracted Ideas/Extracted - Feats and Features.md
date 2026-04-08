@@ -1,7 +1,7 @@
 # Links
 
 ### Part 1
-1. [[Part 1 Raw#8. Feature Graph (Very Powerful)|Feature struct]]
+1. [[Part 1 Raw#8. Feature Graph (Very Powerful)|Feature struct]] and graph concept
 2. [[Part 1 Raw#5. Feature Table|Feature SQL]]
 3. [[Part 1 Raw#10. Character Feature Table|Character feature SQL]]
 4. [[Part 1 Raw#3. The Feature System (Where Homebrew Lives)|Feature struct]] plus [[Part 1 Raw#5. Why This Works for Homebrew|JSON example]]
@@ -30,6 +30,8 @@
 - ID, name, description, source
 - effects: `Vec<Effect>`
 - a `FeatCategory`
+- perhaps also a list of things it grants, like the features a feature grants
+	- e.g. choosing a feat will grant you access to features like new actions or proficiencies
 
 ### enum FeatCategory
 - origin, general, fighting style, epic boon

@@ -129,7 +129,7 @@
 - each variant can have it's own subtype data struct (e.g., `WeaponData`)
 
 ### struct Id (all of them)
-- see \<TODO Identifiers extract> for more
+- see [[Extracted - Identifiers]] for more
 - either dynamically generated integers (probably indexes into more fundamental arrays) or strings (like `phb.potion_of_healing` or `tcoe.eldritch_claw_tattoo`)
 
 ### struct Money
