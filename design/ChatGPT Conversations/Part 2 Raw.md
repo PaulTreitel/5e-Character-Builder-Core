@@ -3476,9 +3476,10 @@ The engine merges fragments into a global graph.
 pub struct RuleEngine {  
     pub graph: RuleGraph,  
 }
+```
 
 Merge algorithm:
-
+```Rust
 fn merge_fragment(graph: &mut RuleGraph, frag: RuleFragment) {  
     for node in frag.nodes {  
         graph.add_node(node);  
