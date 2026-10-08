@@ -3859,7 +3859,7 @@ IDs are the **primary contract** between systems.
 Each definition should follow a consistent structure.
 
 Example skeleton:
-```
+```YAML
 id: spell.fireball  
 type: spell  
   
